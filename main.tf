@@ -32,13 +32,13 @@ resource "hcloud_network_subnet" "kubeone" {
 }
 
 resource "hcloud_server_network" "control_plane" {
-  count     = 3
+  count     = ${var.master_count}
   server_id = element(hcloud_server.control_plane.*.id, count.index)
   subnet_id = hcloud_network_subnet.kubeone.id
 }
 
 resource "hcloud_server" "control_plane" {
-  count       = 3
+  count       = ${var.master_count}
   name        = "${var.cluster_name}-control-plane-${count.index + 1}"
   server_type = var.control_plane_type
   image       = var.image
@@ -55,7 +55,7 @@ resource "hcloud_server" "control_plane" {
 }
 
 resource "hcloud_volume" "storage" {
-  count      = 3
+  count      = ${var.master_count}
   location   = var.datacenter
   name       = "${var.cluster_name}-volume-${count.index}"
   size       = 150 
@@ -63,7 +63,7 @@ resource "hcloud_volume" "storage" {
 }
 
 resource "hcloud_volume_attachment" "storage_attach" {
-  count     = 3
+  count     = ${var.master_count}
   volume_id = hcloud_volume.storage[count.index].id
   server_id = hcloud_server.control_plane[count.index].id
   automount = true 
@@ -88,7 +88,7 @@ resource "hcloud_load_balancer" "load_balancer" {
 resource "hcloud_load_balancer_target" "load_balancer_target" {
   type             = "server"
   load_balancer_id = hcloud_load_balancer.load_balancer.id
-  count            = 3
+  count            = ${var.master_count}
   server_id        = element(hcloud_server.control_plane.*.id, count.index)
   use_private_ip   = true
   depends_on = [
