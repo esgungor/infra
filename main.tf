@@ -57,7 +57,7 @@ resource "hcloud_server" "control_plane" {
 resource "hcloud_volume" "storage" {
   count      = 3
   location   = var.datacenter
-  name       = "my-volume-${count.index}"
+  name       = "${var.cluster_name}-volume-${count.index}"
   size       = 150 
   format     = "ext4"
 }
