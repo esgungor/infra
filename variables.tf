@@ -32,6 +32,10 @@ variable "ssh_public_key_file" {
   default     = "~/.ssh/id_rsa.pub"
 }
 
+variable "master_count" {
+  description = "Master Node count"
+  default     = 1
+}
 variable "ssh_port" {
   description = "SSH port to be used to provision instances"
   default     = 22
@@ -63,7 +67,7 @@ variable "worker_type" {
 }
 
 variable "workers_replicas" {
-  default = 3
+  default = 1
 }
 
 variable "lb_type" {
