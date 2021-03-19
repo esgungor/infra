@@ -58,15 +58,13 @@ resource "hcloud_volume" "storage" {
   count      = var.master_count
   location   = var.datacenter
   name       = "${var.cluster_name}-volume-${count.index}"
-  size       = 150 
-  format     = "ext4"
+  size       = var.storage_size 
 }
 
 resource "hcloud_volume_attachment" "storage_attach" {
   count     = var.master_count
   volume_id = hcloud_volume.storage[count.index].id
   server_id = hcloud_server.control_plane[count.index].id
-  automount = true 
 }
 
 resource "hcloud_load_balancer_network" "load_balancer" {
