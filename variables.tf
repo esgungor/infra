@@ -78,6 +78,10 @@ variable "datacenter" {
   default = "nbg1"
 }
 
+variable "storage_size"{
+  default= 150
+}
+    
 variable "image" {
   default = "ubuntu-20.04"
 }
