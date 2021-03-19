@@ -67,6 +67,7 @@ variable "worker_type" {
 }
 
 variable "workers_replicas" {
+  type = number
   default = 1
 }
 
